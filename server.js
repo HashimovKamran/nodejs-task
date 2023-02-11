@@ -7,7 +7,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
 const errorHandler = require('./src/api/v1/middlewares/errorHandler');
-const { logger } = require('./src/api/v1/middlewares/logEvents');
+const { logger, logEvents } = require('./src/api/v1/middlewares/logEvents');
 const mongoose = require('mongoose');
 const connectDB = require('./src/config/dbConn');
 const PORT = process.env.PORT || 3500;
@@ -21,11 +21,10 @@ app.use(
     swaggerUi.setup(swaggerDocument)
 );
 
-// process.on('uncaughtException', err => {
-//     console.log(`ERROR: ${err.message}`);
-//     console.log('Shutting down due to uncaught exception.')
-//     process.exit(1);
-// });
+process.on('uncaughtException', err => {
+    logEvents(`${err.name}: ${err.message}`, 'errLog.txt');
+    process.exit(1);
+});
 
 connectDB();
 app.use(logger);
@@ -50,7 +49,7 @@ app.use(errorHandler);
 
 mongoose.connection.once('open', () => {
     console.log('Connected to MongoDB');
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 });
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 module.exports = app;
