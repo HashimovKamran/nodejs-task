@@ -4,6 +4,12 @@ const sendToken = require('../helpers/sendToken');
 
 const registerUser = catchAsyncErrors( async (req, res, next) => {
     const {name,email,password} = req.body.metadata;
+
+    const user = await User.findOne({email});
+
+    if(user) {
+        return res.status(401).json({'message':'Invalid Email or Password.'});
+    }
     
     await User.create({
         name,
