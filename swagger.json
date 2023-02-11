@@ -1,0 +1,209 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Task API",
+      "contact": {},
+      "version": "1.0"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3000/api/v1",
+        "variables": {}
+      }
+    ],
+    "paths": {
+      "/auth/register": {
+        "post": {
+          "tags": [
+            "Auth"
+          ],
+          "summary": "Register User",
+          "operationId": "RegisterUser",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterUserRequest"
+                },
+                "example": {
+                    "metadata":{
+                        "name": "Kamran",
+                        "email": "kamranhashimov40@gmail.com",
+                        "password": "kamranHashimov40"
+                    }
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": []
+        }
+      },
+      "/auth/login": {
+        "post": {
+          "tags": [
+            "Auth"
+          ],
+          "summary": "Login User",
+          "operationId": "LoginUser",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginUserRequest"
+                },
+                "example": {
+                    "metadata":{
+                        "email": "kamranhashimov40@gmail.com",
+                        "password": "kamranHashimov40"
+                    }
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": []
+        }
+      },
+      "/quotes/list": {
+        "post": {
+          "tags": [
+            "Quotes"
+          ],
+          "summary": "List Quote",
+          "operationId": "ListQuote",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListQuoteRequest"
+                },
+                "example": {
+                  "metadata": {
+                    "limit": 5
+                  }
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "RegisterUserRequest": {
+          "title": "RegisterUserRequest",
+          "required": [
+            "name",
+            "email",
+            "password"
+          ],
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "metadata":{
+                "name": "Kamran",
+                "email": "kamranhashimov40@gmail.com",
+                "password": "kamranHashimov40"
+            }
+          }
+        },
+        "LoginUserRequest": {
+          "title": "LoginUserRequest",
+          "required": [
+            "email",
+            "password"
+          ],
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "metadata":{
+                "email": "kamranhashimov40@gmail.com",
+                "password": "kamranHashimov40"
+            }
+          }
+        },
+        "ListQuoteRequest": {
+          "title": "ListQuoteRequest",
+          "required": [
+            "limit"
+          ],
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer"
+            }
+          },
+          "example": {
+            "limit": 5
+          }
+        }
+      },
+      "securitySchemes": {
+        "httpBearer": {
+          "type": "http",
+          "scheme": "bearer"
+        }
+      }
+    },
+    "security": [
+      {
+        "httpBearer": []
+      }
+    ],
+    "tags": [
+      {
+        "name": "Auth",
+        "description": ""
+      },
+      {
+        "name": "Quotes",
+        "description": ""
+      }
+    ]
+  }
