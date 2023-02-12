@@ -27,9 +27,9 @@ const loginValidation = (req, res, next) => {
     };
       
     const validate = ajv.compile(schema);
-    const valid = validate(data);
+    const isValid = validate(data);
 
-    if (!valid) {
+    if (!isValid) {
         res.status(422).json(validate.errors);
     } else next()
 }
