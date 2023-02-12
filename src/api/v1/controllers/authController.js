@@ -1,5 +1,5 @@
 const User = require('../models/User');
-const catchAsyncErrors = require('../middlewares/catchAsyncErrors');
+const catchAsyncErrors = require('../helpers/catchAsyncErrors');
 const sendToken = require('../helpers/sendToken');
 
 const registerUser = catchAsyncErrors( async (req, res, next) => {

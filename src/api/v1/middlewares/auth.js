@@ -1,7 +1,5 @@
-const catchAsyncErrors = require('./catchAsyncErrors');
+const catchAsyncErrors = require('../helpers/catchAsyncErrors');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const ErrorHandler = require('../middlewares/errorHandler');
 
 const isAuthenticatedUser = catchAsyncErrors( async (req, res, next) => {
     let token;
@@ -13,8 +11,11 @@ const isAuthenticatedUser = catchAsyncErrors( async (req, res, next) => {
         return res.status(401).json({'message':'Unauthenticated'})
     }
     
-    jwt.verify(token, process.env.JWT_SECRET);
-    next();
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({'message':'Unauthenticated'})
+        } else next();
+    });
 });
 
 module.exports = isAuthenticatedUser;

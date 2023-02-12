@@ -1,23 +1,27 @@
-const Joi = require('joi');
+const Ajv = require('ajv');
+const ajv = new Ajv();
+
+const schema = {
+  type: 'object',
+  properties: {
+    limit: { type: 'number' }
+  },
+  required: ['limit'],
+};
+
 
 const quotesValidation = (req, res, next) => {
-    const {limit} = req.body.metadata;
+    const { limit } = req.body.metadata;
 
-    const schema = Joi.object({
-        metadata: {
-            limit: Joi.number().integer().required()
-        }
-    });
-      
     const data = {
-        metadata:{
-            limit: limit
-        }
+        limit: limit
     };
-      
-    const result = schema.validate(data);
-    if (result.error) {
-        res.status(422).json(result.error.message);
+
+    const validate = ajv.compile(schema);
+    const valid = validate(data);
+
+    if (!valid) {
+        res.status(422).json(validate.errors);
     } else next()
 }
 

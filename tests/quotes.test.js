@@ -3,7 +3,7 @@ const server = require('../server');
 
 const data = {
     metadata:{
-      limit: 5
+      limit: process.env.LIMIT
     }
 };
 

@@ -1,5 +1,5 @@
 const axios = require("axios");
-const catchAsyncError = require('../middlewares/catchAsyncErrors');
+const catchAsyncError = require('../helpers/catchAsyncErrors');
 
 const options = {
     method: 'GET',

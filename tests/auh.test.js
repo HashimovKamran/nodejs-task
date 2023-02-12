@@ -3,9 +3,9 @@ const server = require('../server');
 
 const data = {
     metadata:{
-        name: "Kamran",
-        email: "kamranhashimov90@gmail.com",
-        password: "kamranHashimov40"
+        name: process.env.USERNAME,
+        email: process.env.EMAIL,
+        password: process.env.PASSWORD
     }
 };
 

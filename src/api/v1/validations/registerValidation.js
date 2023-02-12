@@ -1,27 +1,38 @@
-const Joi = require('joi');
+const Ajv = require('ajv');
+const ajv = new Ajv();
+
+const schema = {
+    type: 'object',
+    properties: {
+      name: { type: 'string' },
+      email: { 
+        type: 'string',
+        pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+      },
+      password: { 
+        type: 'string',
+        minLength: 8,
+        maxLength: 20,
+        pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%^&*])(?=.{8,20})'
+      }
+    },
+    required: ['name', 'email', 'password'],
+};
 
 const registerValidation = (req, res, next) => {
-    const {name, email, password} = req.body.metadata;
-
-    const schema = Joi.object({
-        metadata: {
-            name: Joi.string().required(),
-            email: Joi.string().email().required(),
-            password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{6,30}$')).required()
-        }
-    });
+    const { name, email, password } = req.body.metadata;
       
     const data = {
-        metadata:{
-            name: name,
-            email: email,
-            password: password
-        }
+        name: name,
+        email: email,
+        password: password
     };
       
-    const result = schema.validate(data);
-    if (result.error) {
-        res.status(422).json(result.error.message);
+    const validate = ajv.compile(schema);
+    const valid = validate(data);
+
+    if (!valid) {
+        res.status(422).json(validate.errors);
     } else next()
 }
 
